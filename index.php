@@ -10,6 +10,24 @@
 <body>
 <div class="container">
     <h1 class="my-4">Hotels List</h1>
+
+    <!-- Form di filtraggio -->
+    <form method="GET" class="mb-4">
+        <div class="mb-3">
+            <label for="parking" class="form-label">Has Parking?</label>
+            <select name="parking" id="parking" class="form-select">
+                <option value="">-- All --</option>
+                <option value="1">Yes</option>
+                <option value="0">No</option>
+            </select>
+        </div>
+        <div class="mb-3">
+            <label for="vote" class="form-label">Minimum Vote</label>
+            <input type="number" name="vote" id="vote" class="form-control" min="1" max="5" step="1" placeholder="Enter minimum vote">
+        </div>
+        <button type="submit" class="btn btn-primary">Filter</button>
+    </form>
+
     <table class="table table-bordered">
         <thead>
             <tr>
@@ -61,8 +79,20 @@
             ],
         ];
 
-        // Ciclo per creare le righe della tabella
+        // Filtri
+        $filter_parking = isset($_GET['parking']) ? $_GET['parking'] : '';
+        $filter_vote = isset($_GET['vote']) ? (int)$_GET['vote'] : 0;
+
         foreach ($hotels as $hotel) {
+            // Verifica filtro parcheggio
+            if ($filter_parking !== '' && $hotel['parking'] != (bool)$filter_parking) {
+                continue;
+            }
+            // Verifica filtro voto
+            if ($filter_vote > 0 && $hotel['vote'] < $filter_vote) {
+                continue;
+            }
+
             echo "<tr>";
             echo "<td>{$hotel['name']}</td>";
             echo "<td>{$hotel['description']}</td>";
