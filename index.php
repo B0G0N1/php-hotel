@@ -41,14 +41,17 @@
 </head>
 <body>
 <div class="container">
+    <!-- Titolo della pagina -->
     <h1>Hotels List</h1>
 
-    <!-- Form di filtraggio -->
+    <!-- Sezione del form di filtraggio -->
     <div class="row">
         <div class="col-lg-4">
             <div class="filter-form">
+                <!-- Form per il filtro -->
                 <form method="GET" class="filter-section">
                     <h4>Filter Hotels</h4>
+                    <!-- Filtro Parcheggio -->
                     <div class="mb-3">
                         <label for="parking" class="form-label">Has Parking?</label>
                         <select name="parking" id="parking" class="form-select">
@@ -57,15 +60,18 @@
                             <option value="0">No</option>
                         </select>
                     </div>
+                    <!-- Filtro Voto Minimo -->
                     <div class="mb-3">
                         <label for="vote" class="form-label">Minimum Vote</label>
                         <input type="number" name="vote" id="vote" class="form-control" min="1" max="5" step="1" placeholder="Enter minimum vote">
                     </div>
+                    <!-- Pulsante per applicare i filtri -->
                     <button type="submit" class="btn btn-primary w-100">Apply Filters</button>
                 </form>
             </div>
         </div>
 
+        <!-- Sezione della tabella con i risultati degli hotel -->
         <div class="col-lg-8">
             <table class="table table-bordered">
                 <thead>
@@ -118,20 +124,22 @@
                     ],
                 ];
 
-                // Filtri
+                // Lettura dei parametri di filtraggio (parcheggio e voto minimo)
                 $filter_parking = isset($_GET['parking']) ? $_GET['parking'] : '';
                 $filter_vote = isset($_GET['vote']) ? (int)$_GET['vote'] : 0;
 
+                // Ciclo per visualizzare gli hotel filtrati
                 foreach ($hotels as $hotel) {
-                    // Verifica filtro parcheggio
+                    // Filtra in base al parcheggio
                     if ($filter_parking !== '' && $hotel['parking'] != (bool)$filter_parking) {
                         continue;
                     }
-                    // Verifica filtro voto
+                    // Filtra in base al voto minimo
                     if ($filter_vote > 0 && $hotel['vote'] < $filter_vote) {
                         continue;
                     }
 
+                    // Visualizza i dati dell'hotel nella tabella
                     echo "<tr>";
                     echo "<td>{$hotel['name']}</td>";
                     echo "<td>{$hotel['description']}</td>";
